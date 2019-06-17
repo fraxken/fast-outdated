@@ -6,20 +6,8 @@ const { join } = require("path");
 const pacote = require("pacote");
 const semver = require("semver");
 
-/**
- * @func cleanRange
- * @desc Clean up range (as possible).
- * @param {!String} version version
- * @returns {String}
- */
-function cleanRange(version) {
-    const firstChar = version.charAt(0);
-    if (firstChar === "^" || firstChar === "<" || firstChar === ">" || firstChar === "=") {
-        return version.slice(version.charAt(1) === "=" ? 2 : 1);
-    }
-
-    return version;
-}
+// Require Internal Dependencies
+const { cleanRange } = require("./src/utils");
 
 /**
  * @async
