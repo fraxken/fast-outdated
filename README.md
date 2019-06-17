@@ -3,7 +3,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SlimIO/is/commit-activity)
 ![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
 
-Fast and Programmatically `npm outdated --json` implementatin that use [pacote](https://github.com/zkat/pacote#options) to achieve similar result.
+Fast and Programmatically `npm outdated --json` implementation that use [pacote](https://github.com/zkat/pacote#options) to achieve similar result.
 
 ## Requirements
 - [Node.js](https://nodejs.org/en/) v10 or higher
