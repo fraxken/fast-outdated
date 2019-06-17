@@ -16,6 +16,9 @@ const semver = require("semver");
  */
 async function fetch(name, current) {
     const { versions, "dist-tags": { latest } } = await pacote.packument(name);
+    if (semver.satisfies(latest, current)) {
+        return {};
+    }
 
     const satisfies = Object.keys(versions).filter((ver) => semver.satisfies(ver, current));
     const wanted = satisfies.length === 0 ? latest : satisfies.pop();
@@ -45,7 +48,7 @@ async function outdated(cwd = process.cwd(), options = {}) {
         Object.entries(deps).map(([name, current]) => fetch(name, current))
     );
 
-    return Object.assign(...results);
+    return Object.assign({}, ...results);
 }
 
 module.exports = outdated;

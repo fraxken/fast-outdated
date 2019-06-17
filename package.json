@@ -4,20 +4,20 @@
   "description": "Fast and Programmatically npm outdated --json implementatin that use pacote to achieve similar result.",
   "main": "index.js",
   "scripts": {
-      "prepublishOnly": "pkg-ok",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublishOnly": "pkg-ok",
+    "test": "node test/test.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fraxken/fast-outdated.git"
   },
   "keywords": [
-      "npm",
-      "outdated",
-      "json",
-      "programmatically",
-      "api",
-      "fast"
+    "npm",
+    "outdated",
+    "json",
+    "programmatically",
+    "api",
+    "fast"
   ],
   "author": "GENTILHOMME Thomas <gentilhomme.thomas@gmail.com>",
   "license": "MIT",
@@ -31,7 +31,9 @@
   },
   "devDependencies": {
     "@slimio/eslint-config": "^2.0.4",
+    "@slimio/is": "^1.5.1",
     "eslint": "^5.16.0",
+    "japa": "^2.0.10",
     "pkg-ok": "^2.3.1"
   }
 }
