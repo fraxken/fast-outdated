@@ -62,8 +62,5 @@ Options:
 | --- | --- | --- |
 | devDependencies | false | Include devDependencies |
 
-## Roadmap
-- Look to improve if wanted is equal to current (but not equal to latest). In this case we have to cleanup ranges..
-
 ## License
 MIT
