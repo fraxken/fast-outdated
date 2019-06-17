@@ -20,15 +20,19 @@ const { cleanRange } = require("./src/utils");
 async function fetch(name, current) {
     const { versions, "dist-tags": { latest } } = await pacote.packument(name);
     const cleanCurrent = cleanRange(current);
+
     if (semver.satisfies(latest, current) && !current.includes("||") && semver.eq(latest, cleanCurrent)) {
         return {};
     }
+    const wanted = Object.keys(versions).reverse().find((ver) => semver.satisfies(ver, current)) || latest;
 
-    const satisfies = Object.keys(versions).filter((ver) => semver.satisfies(ver, current));
-    const wanted = satisfies.length === 0 || semver.eq(cleanCurrent, satisfies[satisfies.length - 1]) ? latest : satisfies.pop();
-    const location = join("node_modules", ...name.split("/"));
-
-    return { [name]: { current, latest, wanted, location } };
+    return {
+        [name]: {
+            current, latest,
+            wanted: semver.eq(cleanCurrent, wanted) ? latest : wanted,
+            location: join("node_modules", ...name.split("/"))
+        }
+    };
 }
 
 /**
@@ -51,7 +55,7 @@ async function outdated(cwd = process.cwd(), options = {}) {
         Object.entries(deps).map(([name, current]) => fetch(name, current))
     );
 
-    return { ...packagesToUpdate };
+    return Object.assign(...packagesToUpdate);
 }
 
 module.exports = outdated;
