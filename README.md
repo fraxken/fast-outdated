@@ -62,5 +62,10 @@ Options:
 | --- | --- | --- |
 | devDependencies | false | Include devDependencies |
 
+## Roadmap
+- Add authentication with npm_token
+- Add clearCache() that call pacote.clearMemoized under the hood
+- Improve test suite
+
 ## License
 MIT
