@@ -7,6 +7,29 @@ const pacote = require("pacote");
 const semver = require("semver");
 
 /**
+ * @func cleanRange
+ * @desc Clean up range (as possible).
+ * @param {!String} version version
+ * @returns {String}
+ */
+function cleanRange(version) {
+    if (version.includes("||")) {
+        throw new Error("Can't support Semver Ranges that contain ||");
+    }
+
+    const firstChar = version.charAt(0);
+    if (firstChar === "<" || firstChar === ">" || firstChar === "=" || firstChar === "^") {
+        if (version.charAt(1) === "=") {
+            return version.slice(2);
+        }
+
+        return version.slice(1);
+    }
+
+    return version;
+}
+
+/**
  * @async
  * @func fetch
  * @desc Fetch package metadata with pacote and return all versions information
@@ -16,13 +39,18 @@ const semver = require("semver");
  */
 async function fetch(name, current) {
     const { versions, "dist-tags": { latest } } = await pacote.packument(name);
-    if (semver.satisfies(latest, current)) {
+    const cleanCurrent = cleanRange(current);
+    if (semver.satisfies(latest, current) && semver.eq(latest, cleanCurrent)) {
         return {};
     }
 
     const satisfies = Object.keys(versions).filter((ver) => semver.satisfies(ver, current));
-    const wanted = satisfies.length === 0 ? latest : satisfies.pop();
     const location = join("node_modules", ...name.split("/"));
+
+    let wanted = satisfies.length === 0 ? latest : satisfies.pop();
+    if (semver.eq(cleanCurrent, wanted)) {
+        wanted = latest;
+    }
 
     return { [name]: { current, latest, wanted, location } };
 }
