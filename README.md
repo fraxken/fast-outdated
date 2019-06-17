@@ -54,6 +54,7 @@ declare function Outdated(cwd?: string, options?: Outdated.Options): Promise<Out
 Will give you equivalent result that the command `npm outdated --json`. The default cwd value will be equal to `process.cwd()`.
 
 Options:
+
 | name | default value | description |
 | --- | --- | --- |
 | devDependencies | false | Include devDependencies |
