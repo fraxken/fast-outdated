@@ -13,17 +13,9 @@ const semver = require("semver");
  * @returns {String}
  */
 function cleanRange(version) {
-    if (version.includes("||")) {
-        throw new Error("Can't support Semver Ranges that contain ||");
-    }
-
     const firstChar = version.charAt(0);
-    if (firstChar === "<" || firstChar === ">" || firstChar === "=" || firstChar === "^") {
-        if (version.charAt(1) === "=") {
-            return version.slice(2);
-        }
-
-        return version.slice(1);
+    if (firstChar === "^" || firstChar === "<" || firstChar === ">" || firstChar === "=") {
+        return version.slice(version.charAt(1) === "=" ? 2 : 1);
     }
 
     return version;
@@ -40,7 +32,7 @@ function cleanRange(version) {
 async function fetch(name, current) {
     const { versions, "dist-tags": { latest } } = await pacote.packument(name);
     const cleanCurrent = cleanRange(current);
-    if (semver.satisfies(latest, current) && semver.eq(latest, cleanCurrent)) {
+    if (semver.satisfies(latest, current) && !current.includes("||") && semver.eq(latest, cleanCurrent)) {
         return {};
     }
 
@@ -65,18 +57,17 @@ async function fetch(name, current) {
  * @returns {Promise<any>}
  */
 async function outdated(cwd = process.cwd(), options = {}) {
-    const { devDependencies = false } = options;
+    const { devDependencies: allowDev = false } = options;
 
-    // Read and parse package.json
     const str = await readFile(join(cwd, "package.json"), "utf-8");
-    const pkg = JSON.parse(str);
+    const { dependencies = {}, devDependencies = {} } = JSON.parse(str);
+    const deps = Object.assign(dependencies, allowDev ? devDependencies : {});
 
-    const deps = Object.assign(pkg.dependencies || {}, devDependencies ? pkg.devDependencies || {} : {});
-    const results = await Promise.all(
+    const packagesToUpdate = await Promise.all(
         Object.entries(deps).map(([name, current]) => fetch(name, current))
     );
 
-    return Object.assign({}, ...results);
+    return { ...packagesToUpdate };
 }
 
 module.exports = outdated;
