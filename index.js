@@ -25,12 +25,8 @@ async function fetch(name, current) {
     }
 
     const satisfies = Object.keys(versions).filter((ver) => semver.satisfies(ver, current));
+    const wanted = satisfies.length === 0 || semver.eq(cleanCurrent, satisfies[satisfies.length - 1]) ? latest : satisfies.pop();
     const location = join("node_modules", ...name.split("/"));
-
-    let wanted = satisfies.length === 0 ? latest : satisfies.pop();
-    if (semver.eq(cleanCurrent, wanted)) {
-        wanted = latest;
-    }
 
     return { [name]: { current, latest, wanted, location } };
 }
