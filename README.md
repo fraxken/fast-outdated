@@ -47,6 +47,7 @@ declare namespace Outdated {
 
     interface Options {
         devDependencies?: boolean;
+        token?: string;
     }
 }
 
@@ -61,9 +62,9 @@ Options:
 | name | default value | description |
 | --- | --- | --- |
 | devDependencies | false | Include devDependencies |
+| token | undefined | npm token for private packages |
 
 ## Roadmap
-- Add authentication with npm_token
 - Add clearCache() that call pacote.clearMemoized under the hood
 - Improve test suite
 

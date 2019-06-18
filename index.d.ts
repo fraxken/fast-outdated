@@ -10,6 +10,7 @@ declare namespace Outdated {
 
     interface Options {
         devDependencies?: boolean;
+        token?: string;
     }
 }
 
