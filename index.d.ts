@@ -12,9 +12,10 @@ declare namespace Outdated {
         devDependencies?: boolean;
         token?: string;
     }
-}
 
-declare function Outdated(cwd?: string, options?: Outdated.Options): Promise<Outdated.Packages>;
+    export function outdated(cwd?: string, options?: Options): Promise<Packages>;
+    export function clearCache(): any;
+}
 
 export as namespace Outdated;
 export = Outdated;

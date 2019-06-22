@@ -7,7 +7,7 @@ const japa = require("japa");
 const is = require("@slimio/is");
 
 // Require Internal Dependencies
-const outdated = require("../");
+const { outdated, clearCache } = require("../");
 
 // CONSTANTS
 const EXEC_SUFFIX = process.platform === "win32";
@@ -17,6 +17,7 @@ japa("exported must be a function", (assert) => {
 });
 
 japa("get members of current project", async(assert) => {
+    clearCache();
     const cwd = join(__dirname, "..");
     const { stdout } = spawnSync(`npm${EXEC_SUFFIX ? ".cmd" : ""}`, ["outdated", "--json"], {
         cwd

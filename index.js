@@ -30,8 +30,9 @@ async function fetch(name, current, token) {
 
     return {
         [name]: {
-            current, latest,
-            wanted: semver.eq(cleanCurrent, wanted) ? latest : wanted,
+            current: cleanCurrent,
+            latest,
+            wanted,
             location: join("node_modules", ...name.split("/"))
         }
     };
@@ -63,4 +64,13 @@ async function outdated(cwd = process.cwd(), options = {}) {
     return Object.assign(...packagesToUpdate);
 }
 
-module.exports = outdated;
+/**
+ * @func clearCache
+ * @desc Clear memoized pacote cache
+ * @returns {any}
+ */
+function clearCache() {
+    return pacote.clearMemoized();
+}
+
+module.exports = { outdated, clearCache };

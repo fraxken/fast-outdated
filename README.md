@@ -23,9 +23,10 @@ $ yarn add fast-outdated
 
 ## Usage example
 ```js
-const outdated = require("fast-outdated");
+const { outdated, clearCache } = require("fast-outdated");
 
 async function main() {
+    clearCache();
     const data = await outdated(void 0, { devDependencies: true });
     console.log(JSON.stringify(data, null, 4));
 }
@@ -49,12 +50,16 @@ declare namespace Outdated {
         devDependencies?: boolean;
         token?: string;
     }
+
+    export function outdated(cwd?: string, options?: Options): Promise<Packages>;
+    export function clearCache(): any;
 }
 
-declare function Outdated(cwd?: string, options?: Outdated.Options): Promise<Outdated.Packages>;
+export as namespace Outdated;
+export = Outdated;
 ```
 
-### Outdated(cwd?: string, options?: Outdated.Options): Promise< Outdated.Packages >
+### outdated(cwd?: string, options?: Outdated.Options): Promise< Outdated.Packages >
 Will give you equivalent result that the command `npm outdated --json`. The default cwd value will be equal to `process.cwd()`.
 
 Options:
@@ -64,8 +69,10 @@ Options:
 | devDependencies | false | Include devDependencies |
 | token | undefined | npm token for private packages |
 
+### clearCache()
+Call `pacote.clearMemoized`.
+
 ## Roadmap
-- Add clearCache() that call pacote.clearMemoized under the hood
 - Improve test suite
 
 ## License
