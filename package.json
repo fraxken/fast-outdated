@@ -27,7 +27,7 @@
   "homepage": "https://github.com/fraxken/fast-outdated#readme",
   "dependencies": {
     "pacote": "^9.5.4",
-    "semver": "^6.1.1"
+    "semver": "^6.3.0"
   },
   "devDependencies": {
     "@slimio/eslint-config": "^3.0.2",
