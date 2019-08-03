@@ -28,7 +28,7 @@ async function fetch(name, current, token) {
     if (semver.satisfies(latest, current) && !current.includes("||") && semver.eq(latest, cleanCurrent)) {
         return {};
     }
-    const wanted = Object.keys(versions).reverse().find((ver) => semver.satisfies(ver, current)) || latest;
+    const wanted = semver.maxSatisfying(versions, current) || latest;
 
     return {
         [name]: {
