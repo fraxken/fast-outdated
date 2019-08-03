@@ -30,7 +30,7 @@
     "semver": "^6.1.1"
   },
   "devDependencies": {
-    "@slimio/eslint-config": "^2.0.4",
+    "@slimio/eslint-config": "^3.0.2",
     "@slimio/is": "^1.5.1",
     "eslint": "^6.0.0",
     "japa": "^2.0.10",
