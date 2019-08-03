@@ -1,3 +1,5 @@
+"use strict";
+
 // Require Node.js Dependencies
 const { readFile } = require("fs").promises;
 const { join } = require("path");
@@ -11,11 +13,11 @@ const { cleanRange } = require("./src/utils");
 
 /**
  * @async
- * @func fetch
- * @desc Fetch package metadata with pacote and return all versions information
- * @param {!String} name package name
- * @param {!String} current package version (range).
- * @param {String=} token npm token
+ * @function fetch
+ * @description Fetch package metadata with pacote and return all versions information
+ * @param {!string} name package name
+ * @param {!string} current package version (range).
+ * @param {string} [token] npm token
  * @returns {Promise<any>}
  */
 async function fetch(name, current, token) {
@@ -40,12 +42,12 @@ async function fetch(name, current, token) {
 
 /**
  * @async
- * @func outdated
- * @desc Fast Programmaticaly alternative to npm outdated
- * @param {String} [cwd] working dir where we will search for packages
- * @param {Object=} options options
- * @param {Boolean} [options.devDependencies=false] search for devDependencies
- * @param {String} [options.token] npm token
+ * @function outdated
+ * @description Fast Programmaticaly alternative to npm outdated
+ * @param {string} [cwd] working dir where we will search for packages
+ * @param {object} [options] options
+ * @param {boolean} [options.devDependencies=false] search for devDependencies
+ * @param {string} [options.token] npm token
  * @returns {Promise<any>}
  */
 async function outdated(cwd = process.cwd(), options = {}) {
@@ -65,8 +67,8 @@ async function outdated(cwd = process.cwd(), options = {}) {
 }
 
 /**
- * @func clearCache
- * @desc Clear memoized pacote cache
+ * @function clearCache
+ * @description Clear memoized pacote cache
  * @returns {any}
  */
 function clearCache() {

@@ -1,13 +1,15 @@
+"use strict";
+
 /**
  * @namespace Utils
  */
 
 /**
- * @func cleanRange
- * @desc Clean up range (as possible).
+ * @function cleanRange
+ * @description Clean up range (as possible).
  * @memberof Utils#
- * @param {!String} version version
- * @returns {String}
+ * @param {!string} version version
+ * @returns {string}
  *
  * @example
  * const assert = require("assert").strict;
