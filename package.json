@@ -19,6 +19,11 @@
     "api",
     "fast"
   ],
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "src/utils.js"
+  ],
   "author": "GENTILHOMME Thomas <gentilhomme.thomas@gmail.com>",
   "license": "MIT",
   "bugs": {
