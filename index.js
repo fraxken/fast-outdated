@@ -8,36 +8,40 @@ const { join } = require("path");
 const pacote = require("pacote");
 const semver = require("semver");
 
-// Require Internal Dependencies
-const { cleanRange } = require("./src/utils");
-
 /**
  * @async
  * @function fetch
  * @description Fetch package metadata with pacote and return all versions information
  * @param {!string} name package name
- * @param {!string} current package version (range).
- * @param {string} [token] npm token
+ * @param {!string} range package version (range).
+ * @param {object} [options] options
+ * @param {string} [options.cwd]
+ * @param {string} [options.token]
  * @returns {Promise<any>}
  */
-async function fetch(name, current, token) {
+async function fetch(name, range, { cwd, token }) {
     const options = typeof token === "string" ? { token } : {};
-    const { versions, "dist-tags": { latest } } = await pacote.packument(name, options);
-    const cleanCurrent = cleanRange(current);
 
-    if (semver.satisfies(latest, current) && !current.includes("||") && semver.eq(latest, cleanCurrent)) {
+    try {
+        const { versions, "dist-tags": { latest } } = await pacote.packument(name, options);
+        const location = join("node_modules", ...name.split("/"));
+
+        // NOTE: can we fetch the right current version without fs ?
+        const rawPkg = await readFile(join(cwd, location, "package.json"), "utf-8");
+        const { version: current } = JSON.parse(rawPkg);
+
+        if (semver.eq(latest, current)) {
+            return {};
+        }
+        const wanted = semver.maxSatisfying(Object.keys(versions), range) || latest;
+
+        return {
+            [name]: { current, latest, wanted, location }
+        };
+    }
+    catch (error) {
         return {};
     }
-    const wanted = semver.maxSatisfying(versions, current) || latest;
-
-    return {
-        [name]: {
-            current: cleanCurrent,
-            latest,
-            wanted,
-            location: join("node_modules", ...name.split("/"))
-        }
-    };
 }
 
 /**
@@ -59,7 +63,7 @@ async function outdated(cwd = process.cwd(), options = {}) {
 
     const rejected = [];
     const packagesToUpdate = await Promise.all(
-        Object.entries(deps).map(([name, current]) => fetch(name, current, token).catch(() => rejected.push(name)))
+        Object.entries(deps).map(([name, current]) => fetch(name, current, { cwd, token }).catch(() => rejected.push(name)))
     );
     rejected.forEach((name) => console.error(`Unable to fetch metadata for package ${name}`));
 
