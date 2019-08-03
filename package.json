@@ -1,6 +1,6 @@
 {
   "name": "fast-outdated",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Fast and Programmatically npm outdated --json implementatin that use pacote to achieve similar result.",
   "main": "index.js",
   "scripts": {
