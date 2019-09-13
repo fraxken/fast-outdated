@@ -36,7 +36,7 @@
   "devDependencies": {
     "@slimio/eslint-config": "^3.0.3",
     "@slimio/is": "^1.5.1",
-    "eslint": "^6.1.0",
+    "eslint": "^6.3.0",
     "japa": "^2.0.10",
     "pkg-ok": "^2.3.1"
   }
