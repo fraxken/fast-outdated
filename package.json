@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/fraxken/fast-outdated#readme",
   "dependencies": {
-    "pacote": "^9.5.4",
+    "pacote": "^9.5.8",
     "semver": "^6.3.0"
   },
   "devDependencies": {
