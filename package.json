@@ -37,7 +37,7 @@
     "@slimio/eslint-config": "^3.0.3",
     "@slimio/is": "^1.5.1",
     "eslint": "^6.3.0",
-    "japa": "^2.0.10",
+    "japa": "^3.0.1",
     "pkg-ok": "^2.3.1"
   }
 }
