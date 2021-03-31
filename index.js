@@ -70,13 +70,4 @@ async function outdated(cwd = process.cwd(), options = {}) {
     return Object.assign(...packagesToUpdate);
 }
 
-/**
- * @function clearCache
- * @description Clear memoized pacote cache
- * @returns {any}
- */
-function clearCache() {
-    return pacote.clearMemoized();
-}
-
-module.exports = { outdated, clearCache };
+module.exports = { outdated };
