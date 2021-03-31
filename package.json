@@ -34,10 +34,10 @@
     "semver": "^6.3.0"
   },
   "devDependencies": {
-    "@slimio/eslint-config": "^3.0.3",
+    "@slimio/eslint-config": "^4.1.0",
     "@slimio/is": "^1.5.1",
-    "eslint": "^6.3.0",
-    "japa": "^3.0.1",
+    "eslint": "^7.23.0",
+    "japa": "^3.1.1",
     "pkg-ok": "^2.3.1"
   }
 }
