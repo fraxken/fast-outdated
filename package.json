@@ -30,14 +30,14 @@
   },
   "homepage": "https://github.com/fraxken/fast-outdated#readme",
   "dependencies": {
-    "pacote": "^11.3.1",
+    "pacote": "^12.0.2",
     "semver": "^7.3.5"
   },
   "devDependencies": {
     "@slimio/eslint-config": "^4.1.0",
     "@slimio/is": "^1.5.1",
-    "eslint": "^7.23.0",
-    "japa": "^3.1.1",
+    "eslint": "^8.1.0",
+    "japa": "^4.0.0",
     "pkg-ok": "^2.3.1"
   }
 }
