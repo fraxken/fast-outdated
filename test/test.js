@@ -15,19 +15,18 @@ const { outdated } = require("../");
 const EXEC_SUFFIX = process.platform === "win32";
 
 japa("exported must be a function", (assert) => {
-    assert.isTrue(is.asyncFunction(outdated), "outdated must be a Asynchronous Function");
+  assert.isTrue(is.asyncFunction(outdated), "outdated must be a Asynchronous Function");
 });
 
 japa("get members of current project", async(assert) => {
-    const cwd = join(__dirname, "..");
-    const { stdout } = spawnSync(`npm${EXEC_SUFFIX ? ".cmd" : ""}`, ["outdated", "--json"], {
-        cwd
-    });
-    const str = stdout.toString().trim();
-    const json = str.length === 0 ? {} : JSON.parse(str);
+  const cwd = join(__dirname, "..");
+  const { stdout } = spawnSync(`npm${EXEC_SUFFIX ? ".cmd" : ""}`, ["outdated", "--json"], {
+    cwd
+  });
+  const str = stdout.toString().trim();
+  const json = str.length === 0 ? {} : JSON.parse(str);
 
-    const deps = await outdated(cwd, { devDependencies: true });
-    assert.isTrue(is.plainObject(deps), "deps must be plainObject");
-    assert.deepEqual(deps, json, "npm outdated and deps must be equal!");
+  const deps = await outdated(cwd, { devDependencies: true });
+  assert.isTrue(is.plainObject(deps), "deps must be plainObject");
+  assert.deepEqual(deps, json, "npm outdated and deps must be equal!");
 }).timeout(10000);
-

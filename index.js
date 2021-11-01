@@ -20,28 +20,28 @@ const semver = require("semver");
  * @returns {Promise<any>}
  */
 async function fetch(name, range, { cwd, token }) {
-    const options = typeof token === "string" ? { token } : {};
+  const options = typeof token === "string" ? { token } : {};
 
-    try {
-        const { versions, "dist-tags": { latest } } = await pacote.packument(name, options);
-        const location = join("node_modules", ...name.split("/"));
+  try {
+    const { versions, "dist-tags": { latest } } = await pacote.packument(name, options);
+    const location = join("node_modules", ...name.split("/"));
 
-        // NOTE: can we fetch the right current version without fs ?
-        const rawPkg = await readFile(join(cwd, location, "package.json"), "utf-8");
-        const { version: current } = JSON.parse(rawPkg);
+    // NOTE: can we fetch the right current version without fs ?
+    const rawPkg = await readFile(join(cwd, location, "package.json"), "utf-8");
+    const { version: current } = JSON.parse(rawPkg);
 
-        if (semver.eq(latest, current)) {
-            return {};
-        }
-        const wanted = semver.maxSatisfying(Object.keys(versions), range) || latest;
-
-        return {
-            [name]: { current, latest, wanted, location }
-        };
+    if (semver.eq(latest, current)) {
+      return {};
     }
-    catch (error) {
-        return {};
-    }
+    const wanted = semver.maxSatisfying(Object.keys(versions), range) || latest;
+
+    return {
+      [name]: { current, latest, wanted, location }
+    };
+  }
+  catch (error) {
+    return {};
+  }
 }
 
 /**
@@ -55,19 +55,19 @@ async function fetch(name, range, { cwd, token }) {
  * @returns {Promise<any>}
  */
 async function outdated(cwd = process.cwd(), options = {}) {
-    const { devDependencies: allowDev = false, token } = options;
+  const { devDependencies: allowDev = false, token } = options;
 
-    const str = await readFile(join(cwd, "package.json"), "utf-8");
-    const { dependencies = {}, devDependencies = {} } = JSON.parse(str);
-    const deps = Object.assign(dependencies, allowDev ? devDependencies : {});
+  const str = await readFile(join(cwd, "package.json"), "utf-8");
+  const { dependencies = {}, devDependencies = {} } = JSON.parse(str);
+  const deps = Object.assign(dependencies, allowDev ? devDependencies : {});
 
-    const rejected = [];
-    const packagesToUpdate = await Promise.all(
-        Object.entries(deps).map(([name, current]) => fetch(name, current, { cwd, token }).catch(() => rejected.push(name)))
-    );
-    rejected.forEach((name) => console.error(`Unable to fetch metadata for package ${name}`));
+  const rejected = [];
+  const packagesToUpdate = await Promise.all(
+    Object.entries(deps).map(([name, current]) => fetch(name, current, { cwd, token }).catch(() => rejected.push(name)))
+  );
+  rejected.forEach((name) => console.error(`Unable to fetch metadata for package ${name}`));
 
-    return Object.assign(...packagesToUpdate);
+  return Object.assign(...packagesToUpdate);
 }
 
 module.exports = { outdated };

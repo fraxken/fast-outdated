@@ -1,8 +1,7 @@
 {
-    "extends": "@slimio/eslint-config",
-    "rules": {
-        "no-inline-comments": "off",
-        "line-comment-position": "off",
-        "no-extra-parens": "off"
+    "extends": "@nodesecure/eslint-config",
+    "parserOptions": {
+        "sourceType": "script",
+        "requireConfigFile": false
     }
 }
