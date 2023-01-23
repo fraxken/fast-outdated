@@ -1,8 +1,8 @@
 "use strict";
 
 // Require Node.js Dependencies
-const { readFile } = require("fs").promises;
-const { join } = require("path");
+const fs = require("node:fs/promises");
+const path = require("node:path");
 
 // Require Third-party Dependencies
 const pacote = require("pacote");
@@ -24,10 +24,10 @@ async function fetch(name, range, { cwd, token }) {
 
   try {
     const { versions, "dist-tags": { latest } } = await pacote.packument(name, options);
-    const location = join("node_modules", ...name.split("/"));
+    const location = path.join("node_modules", ...name.split("/"));
 
     // NOTE: can we fetch the right current version without fs ?
-    const rawPkg = await readFile(join(cwd, location, "package.json"), "utf-8");
+    const rawPkg = await fs.readFile(path.join(cwd, location, "package.json"), "utf-8");
     const { version: current } = JSON.parse(rawPkg);
 
     if (semver.eq(latest, current)) {
@@ -57,7 +57,7 @@ async function fetch(name, range, { cwd, token }) {
 async function outdated(cwd = process.cwd(), options = {}) {
   const { devDependencies: allowDev = false, token } = options;
 
-  const str = await readFile(join(cwd, "package.json"), "utf-8");
+  const str = await fs.readFile(path.join(cwd, "package.json"), "utf-8");
   const { dependencies = {}, devDependencies = {} } = JSON.parse(str);
   const deps = Object.assign(dependencies, allowDev ? devDependencies : {});
 
