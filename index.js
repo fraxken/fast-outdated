@@ -55,17 +55,17 @@ async function fetch(name, range, { cwd, token }) {
  * @returns {Promise<any>}
  */
 async function outdated(cwd = process.cwd(), options = {}) {
-  const { devDependencies: allowDev = false, token } = options;
+  const { devDependencies: includeDevDependencies = false, token } = options;
 
   const str = await fs.readFile(path.join(cwd, "package.json"), "utf-8");
   const { dependencies = {}, devDependencies = {} } = JSON.parse(str);
-  const deps = Object.assign(dependencies, allowDev ? devDependencies : {});
+  const deps = Object.assign(dependencies, includeDevDependencies ? devDependencies : {});
 
-  const rejected = [];
-  const packagesToUpdate = await Promise.all(
-    Object.entries(deps).map(([name, current]) => fetch(name, current, { cwd, token }).catch(() => rejected.push(name)))
-  );
-  rejected.forEach((name) => console.error(`Unable to fetch metadata for package ${name}`));
+  const packagesToUpdate = (await Promise.allSettled(
+    Object.entries(deps).map(([name, current]) => fetch(name, current, { cwd, token }))
+  ))
+    .filter((result) => result.status === "fulfilled")
+    .map((result) => result.value);
 
   return Object.assign(...packagesToUpdate);
 }
