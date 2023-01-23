@@ -8,7 +8,7 @@
 Fast and Programmatically `npm outdated --json` implementation that use [pacote](https://github.com/zkat/pacote#options) to achieve similar result.
 
 ## Requirements
-- [Node.js](https://nodejs.org/en/) v12 or higher
+- [Node.js](https://nodejs.org/en/) v16 or higher
 
 ## Getting Started
 
