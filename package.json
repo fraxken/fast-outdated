@@ -31,7 +31,7 @@
   "homepage": "https://github.com/fraxken/fast-outdated#readme",
   "dependencies": {
     "pacote": "^15.0.8",
-    "semver": "^7.3.8"
+    "semver": "^7.5.2"
   },
   "devDependencies": {
     "@nodesecure/eslint-config": "^1.6.0",
