@@ -1,16 +1,14 @@
-"use strict";
+// Import Node.js Dependencies
+import { join } from "node:path";
+import { spawnSync } from "node:child_process";
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
 
-// Require Node.js Dependencies
-const { join } = require("path");
-const { spawnSync } = require("child_process");
-const { describe, it } = require("node:test");
-const assert = require("assert/strict");
+// Import Third-party Dependencies
+import is from "@slimio/is";
 
-// Require Third-party Dependencies
-const is = require("@slimio/is");
-
-// Require Internal Dependencies
-const { outdated } = require("../");
+// Import Internal Dependencies
+import { outdated } from "../src/index.ts";
 
 // CONSTANTS
 const EXEC_SUFFIX = process.platform === "win32";
@@ -24,9 +22,14 @@ describe("outdated", () => {
   });
 
   it("it should fetch outdated dependencies of current project", async() => {
-    const cwd = join(__dirname, "..");
-    const { stdout } = spawnSync(`npm${EXEC_SUFFIX ? ".cmd" : ""}`, ["outdated", "--json"], {
-      cwd
+    const cwd = join(import.meta.dirname, "..");
+    const { stdout } = spawnSync([
+      `npm${EXEC_SUFFIX ? ".cmd" : ""}`,
+      "outdated",
+      "--json"
+    ].join(" "), {
+      cwd,
+      shell: true
     });
     const str = stdout.toString().trim();
     const json = str.length === 0 ? {} : JSON.parse(str);

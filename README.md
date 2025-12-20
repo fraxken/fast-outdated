@@ -8,7 +8,7 @@
 Fast and Programmatically `npm outdated --json` implementation that use [pacote](https://github.com/zkat/pacote#options) to achieve similar result.
 
 ## Requirements
-- [Node.js](https://nodejs.org/en/) v16 or higher
+- [Node.js](https://nodejs.org/en/) v24 or higher
 
 ## Getting Started
 
@@ -21,44 +21,30 @@ $ yarn add fast-outdated
 ```
 
 ## Usage example
-```js
-const { outdated, clearCache } = require("fast-outdated");
 
-async function main() {
-    clearCache();
-    const data = await outdated(void 0, { devDependencies: true });
-    console.log(JSON.stringify(data, null, 4));
-}
-main().catch(console.error);
+```js
+import { outdated } from "fast-outdated";
+
+await outdated(void 0, { devDependencies: true })
 ```
 
 ## API
 
 ```ts
-declare namespace Outdated {
-    interface Packages {
-        [packageName: string]: {
-            wanted: string;
-            current: string;
-            latest: string;
-            location: string;
-        }
-    }
-
-    interface Options {
-        devDependencies?: boolean;
-        token?: string;
-    }
-
-    export function outdated(cwd?: string, options?: Options): Promise<Packages>;
-    export function clearCache(): any;
+export interface PackageUpdate {
+  wanted: string;
+  current: string;
+  latest: string;
+  location: string;
 }
 
-export as namespace Outdated;
-export = Outdated;
+export interface OutdatedOptions {
+  devDependencies?: boolean;
+  token?: string;
+}
 ```
 
-### outdated(cwd?: string, options?: Outdated.Options): Promise< Outdated.Packages >
+### outdated(cwd?: string, options?: OutdatedOptions): Promise< Record< string, PackageUpdate > >
 Will give you equivalent result that the command `npm outdated --json`. The default cwd value will be equal to `process.cwd()`.
 
 Options:
@@ -67,12 +53,6 @@ Options:
 | --- | --- | --- |
 | devDependencies | false | Include devDependencies |
 | token | undefined | npm token for private packages |
-
-### clearCache()
-Call `pacote.clearMemoized`.
-
-## Roadmap
-- Improve test suite
 
 ## License
 MIT
